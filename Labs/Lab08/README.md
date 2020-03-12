@@ -1,7 +1,7 @@
 ﻿# ReadMe for Lab 08, Computational Biology!
 
 ### What's in this Script?
-In this script, I have created a function  in R that calculates discrete time-logistic population growth. The function in this script, called _growthFunc_, calculates population abundances over a chosen number of generations given relevant user-specified initial conditions (explained below in the **User Input** section. 
+In this script, I have created a function  in R that calculates discrete time-logistic population growth. The function in this script, called _growthFunc_, calculates population abundances over a chosen number of generations given relevant user-specified initial conditions (explained below in the **User Input** section). 
 
 #### **What does the function _growthFunc_ return?**
 
@@ -22,7 +22,7 @@ Once the function has been called, the user must then choose their inputs. For _
 * the number of generations to be calculated over (_t_)
 * the initial population size (_n_)
 
-The user must enter these values **_inside_** the parentheses of _growthFunc_ on line X, where the prompt "_Inputs in parentheses below, in this order: r, K, t, n_" can be seen. Once the values have been entered, execute the function and let the magic happen!
+The user must enter these values **_inside_** the parentheses of _growthFunc_ on line 25, where the prompt "_Inputs in parentheses below, in this order: r, K, t, n_" can be seen. Once the values have been entered, execute the function and let the magic happen!
 
 #### Results of executing _growthFunc_ has been executed
 Once the user has executed the function with their desired initial conditions, two things will be generated:

@@ -1,4 +1,4 @@
-﻿# Jackson's Computational Biology Final Assignment!
+# Jackson's Computational Biology Final Assignment!
 
 ### Introduction
 For assignment 8, I think I was a little over-ambitious with my goals/questions! The data set I chose to analyze came from a field study conducted by members of the lab I currently work for. In this study, researchers wanted to look at a potential evolutionary ecological relationship between plant habitat and plant fitness. The resulting data is raw, unanalyzed, and completely new to me. I wanted to achieve 4 things with this final assignment: 
@@ -78,7 +78,7 @@ To answer this question/achieve this goal, I did the following:
 * Added the fitted values from this function to the data set  (**Fitted** in the data set) and used them to plot the fitted values in natural and created pools (see the attached figure below).
 
 
-![Beale Transplant Plots ](https://drive.google.com/open?id=18WYI7aOXWTe6Ruw64VtrORU6-Fk15FjA)
+[Beale Transplant Plots ]https://drive.google.com/open?id=1viLewsF01XTOpCMHRIpHy_JqECajLteA)
 
 
 #### Can I address the unaddressed hypothesis given by the researchers using robust statistical tools through R Studio?

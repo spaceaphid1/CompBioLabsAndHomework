@@ -17,6 +17,10 @@ setwd("/Users/jacksonanderson/Desktop/EBIO4420/CompBioLabsAndHomework/Labs/Assig
 #Reading data in as a tibble
 transDat <- read_csv("TransplantBaeleDataCSV.csv")
 
+
+#Below, I subset the data for brief visualizations. Thes visualizations were done in the console, and were purely meant to give me some general insights on the distrubtion's of the data within each treatment.
+
+
 #Subsetting data by PoolType
 createdDat <- transDat %>% 
   filter( PoolType == "Created")
@@ -24,7 +28,7 @@ createdDat <- transDat %>%
 naturalDat <- transDat %>% 
   filter( PoolType == "Natural")
 
-#Plotting Functions:
+#Plotting Functions: These Functions are to be used throughout the rest of the script to efficiently plot the data
 
 residFunc <- function(model) {
   p1<-ggplot(model, aes(.fitted, .resid))  
@@ -99,7 +103,7 @@ ttest1
 #Graphs
 myPlotsNoOrder( fullLinModel, transDat, transDat$PoolType, transDat$ReproWt, "Reproductive Effort in Natural vs Created Pools", "Reproductive Output (g)", "Baele Transplant Experiment")
 
-#result of a t.test suggest that there is a significant difference in mean fitness between the two groups. Plants in natural pools seem to have a reproductive biomass 2.4 grams heavier than that of plants in artificially created pools. This test does NOT account for random effects due to Transect and PoolID. As well, heteroskedasticity in response variable variance (as seen in the resid. vs fitted plot) suggests that our data does not meet the assumptions of normalcy required for a t.test, and thus a model that both incorporates heteroskedasticity and random effects must be run
+#result of a t.test suggest that there is a significant difference in mean fitness between the two groups. Plants in natural pools seem to have a reproductive biomass 2.4 grams heavier than that of plants in artificially created pools. This test does NOT account for random effects due to Transect and PoolID. As well, residual heteroskedasticity (as seen in the resid. vs fitted plot) suggests that the data does not meet the assumptions of normalcy required by the model.
 
 
 
@@ -108,12 +112,12 @@ myPlotsNoOrder( fullLinModel, transDat, transDat$PoolType, transDat$ReproWt, "Re
 
 #Further Models, Graphs, and Data/Results Summaries
 
-#One way to account for heteroskedasticity in residual variance is to log transform the response variabel. We will create a new variable, LogReproWt, or a log transformed version of the variable ReproWt
+#One way to account for heteroskedasticity in residual variance is to log transform the response variabel. I will create a new variable, LogReproWt, or a log transformed version of the variable ReproWt
 
 transDat$LogReproWt <- log1p(transDat$ReproWt)
 
 
-#We can now do the same models, graphs, and summaries as we did before. This time we will do it on the log transformed data
+#I can now do the same models, graphs, and summaries as done before. This time I will do it on the log transformed data
 
 
 #Models
@@ -124,7 +128,7 @@ ttest1
 #Graphs
 myPlotsNoOrder( fullLinModelLog, transDat, transDat$PoolType, transDat$LogReproWt, "Reproductive Effort in Natural vs Created Pools", "Reproductive Output (g), Log Transformed", "Baele Transplant Experiment: Log Transformed Response")
 
-#t test and data visualizations suggests that there is still a significant difference in response variable means to treatment. LAs well, the data is not as heteroskedastic, and thus we can feel more comfortable with the knowldge that our data is meeting assumptions of normalcy required for a t test. In this case, when the response variable has been log transformed, the difference in means between treatments for LogReproWt is ~0.30, where plants in natural pools can be seen to have a higher fitness (using LogReproWt as a measure). Next, we must account for the random effects of PoolID and Transect location!
+#t test and data visualizations suggests that there is still a significant difference in response variable means to treatment effect. As well, the data is not as heteroskedastic, and thus I feel more comfortable with the knowldge that the data is meeting assumptions of normalcy required for the model. In this case, when the response variable has been log transformed, the difference in means between treatments for LogReproWt is ~0.30, where plants in natural pools can be seen to have a higher fitness (using LogReproWt as a measure). Next, I must account for the random effects of PoolID and Transect location!
 
 #Running a mixed model with PoolID and nested transect as random effects
 
@@ -132,7 +136,7 @@ transDat <- transDat[-c(65),] #first, removing NA row; lme function was having t
 m1 <- lme(LogReproWt~PoolType , random = ~1 | PoolID/Trans, data = transDat)
 summary(m1)
 
-#Analyzying the results of this model suggest that, when accounting for random effects, there is no significant difference in response means by treatment. As well, it would seem that PoolID accounts for more variance in response variable distribution than Trans (0.4096561 vs 0.0001026181 StdDev., respectively). Thus, we will only use the fitted values for PoolID, and not transect, when making subsequent graphs
+#Analyzying the results of this model suggest that, when accounting for random effects, there is no significant difference in response means by treatment. As well, it would seem that PoolID accounts for more variance in response variable distribution than Trans (0.4096561 vs 0.0001026181 StdDev., respectively). Thus, I will only use the fitted values for PoolID, and not transect, when making subsequent graphs
 
 #Creating a data frame with values from the m1 model; done for graphing ease of use in diagnostics plots
 m1DataFrame <- data.frame(m1$fitted[,2], m1$residuals[,2], m1$fitted[,1])
@@ -142,18 +146,18 @@ transDat$Fitted <- expm1(m1$fitted[,2])
 
 
 
-#Mixed Model Plotting
+#Mixed Model Plotting: Given the strange syntax of the lme model, I was not able to use the plotting functions I used before; doing so would have required significant changes and specifications to each graph being made. Consequently, I made each graph seperately and stored it in an object to then be called when making the grid plot. 
 
 
 #Diagnsotics Plot Mixed Model
 
 MMDiagPlot <-ggplot(m1DataFrame, aes(m1DataFrame$m1.fitted...2., m1DataFrame$m1.residuals...2.))   + geom_jitter(width = .008, aes(col = factor(m1DataFrame$m1.fitted...1.)), size = 2, alpha = .5, show.legend = F) + 
   scale_color_manual(values = wes_palette("FantasticFox1")) + 
-geom_hline(yintercept=0, col="darkslategrey", linetype="dashed") +
-xlab("Fitted values")+
-ylab("Residuals") + 
-ggtitle("Figure 4: Residual vs Fitted Plot (using PoolID)")+theme_bw() + 
-labs( caption = "Brown = Created, Yellow = Natural ")
+  geom_hline(yintercept=0, col="darkslategrey", linetype="dashed") +
+  xlab("Fitted values")+
+  ylab("Residuals") + 
+  ggtitle("Figure 4: Residual vs Fitted Plot (using PoolID)")+theme_bw() + 
+  labs( caption = "Brown = Created, Yellow = Natural ")
 MMDiagPlot
 
 
